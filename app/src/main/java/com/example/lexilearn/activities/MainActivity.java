@@ -1,26 +1,57 @@
 package com.example.lexilearn.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.lexilearn.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
+    private RecyclerView recyclerView;
+    private DashboardAdapter adapter;
+    private List<DashboardItem> itemList;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Sample Data
+        itemList = new ArrayList<>();
+        itemList.add(new DashboardItem("Daily Challenges", R.drawable.challenge));
+        itemList.add(new DashboardItem("Spelling Bee", R.drawable.spell_bee));
+        itemList.add(new DashboardItem("Drag-and-Drop Words", R.drawable.drag));
+        itemList.add(new DashboardItem("Tap the Right Word", R.drawable.tap));
+        itemList.add(new DashboardItem("Word Association", R.drawable.wordgame));
+        itemList.add(new DashboardItem("Drawing Board", R.drawable.drawing));
+
+        adapter = new DashboardAdapter(this, itemList);
+        recyclerView.setAdapter(adapter);
+
+        // Profile Icon Click
+        ImageView profileIcon = findViewById(R.id.profileIcon);
+        profileIcon.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        });
+
+        // Logout Icon Click
+        ImageView logoutIcon = findViewById(R.id.logoutIcon);
+        logoutIcon.setOnClickListener(view -> {
+            // Implement logout logic here
+            finish();
         });
     }
 }
