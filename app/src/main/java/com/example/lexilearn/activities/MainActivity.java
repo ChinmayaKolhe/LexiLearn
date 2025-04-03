@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.lexilearn.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +49,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Logout Icon Click
+        // Logout Icon Click
         ImageView logoutIcon = findViewById(R.id.logoutIcon);
         logoutIcon.setOnClickListener(view -> {
-            // Implement logout logic here
+            FirebaseAuth.getInstance().signOut(); // Sign out the user
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             finish();
         });
+
+
     }
 }
